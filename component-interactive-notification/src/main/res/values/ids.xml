@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="interactive_notification_title" type="id"/>
+    <item name="interactive_notification_info" type="id"/>
+    <item name="interactive_notification_action_1" type="id"/>
+    <item name="interactive_notification_action_2" type="id"/>
+    <item name="interactive_notification_action_3" type="id"/>
+    <item name="interactive_notification_action_4" type="id"/>
+    <item name="interactive_notification_action_5" type="id"/>
+</resources>

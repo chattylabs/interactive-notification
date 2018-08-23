@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:baselineAligned="false">
+
+    <TextView
+        android:id="@+id/interactive_notification_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Compat.Notification.Title"
+        tools:text="Any random question?"/>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@id/interactive_notification_action_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="gone"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@id/interactive_notification_action_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="gone"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@id/interactive_notification_action_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="gone"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@id/interactive_notification_action_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="gone"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@id/interactive_notification_action_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:visibility="gone"
+            tools:text="\uD83D\uDE03" />
+
+    </LinearLayout>
+
+</LinearLayout>
