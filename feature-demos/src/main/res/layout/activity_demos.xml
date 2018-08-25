@@ -7,29 +7,55 @@
     tools:context="com.chattylabs.habits.feature.DemosActivity">
 
     <Button
-        android:id="@+id/btn_notif_2_icons"
+        android:id="@+id/btn_notif_2_icons_1"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="open2IconsNotification"
-        android:text="Open Notification: 2 icons on right"
+        android:onClick="open2IconsRight_1"
+        android:text="Notification: 2 icons on right, short text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_notif_icons_bottom"
+        android:id="@+id/btn_notif_2_icons_2"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="openIconsNotificationAtBottom"
-        android:text="Open Notification: icons at bottom"
+        android:onClick="open2IconsRight_2"
+        android:text="Notification: 2 icons on right, very large text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_notif_2_icons" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_notif_2_icons_1" />
+
+    <Button
+        android:id="@+id/btn_notif_icons_bottom_1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="openIconsBottom_1"
+        android:text="Open Notification: icons at bottom, short text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_notif_2_icons_2" />
+
+    <Button
+        android:id="@+id/btn_notif_icons_bottom_2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="openIconsBottom_2"
+        android:text="Open Notification: icons at bottom, very large text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_notif_icons_bottom_1" />
 
 </android.support.constraint.ConstraintLayout>

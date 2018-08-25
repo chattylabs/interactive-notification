@@ -7,7 +7,8 @@ import android.content.Context
 class InteractiveNotificationBuilder(
         private val context: Context,
         private val receiver: Class<out BroadcastReceiver>,
-        private val title: CharSequence,
+        private val contentTitle: CharSequence,
+        private val expandSubtitle: CharSequence,
         private val actions: LinkedHashMap<Int, String>) {
 
     init {
@@ -17,8 +18,6 @@ class InteractiveNotificationBuilder(
     private val notificationManager: NotificationManager = context.applicationContext
             .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    val info: CharSequence? = null
-
     fun build(): InteractiveNotification = InteractiveSurveyNotificationImpl(
-            context, receiver, notificationManager, title, actions, info )
+            context, receiver, notificationManager, contentTitle, expandSubtitle, actions )
 }
