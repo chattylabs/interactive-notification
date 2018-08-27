@@ -43,10 +43,6 @@
         <Button
             android:id="@id/interactive_notification_action_2"
             style="@style/InteractiveNotificationTheme.Action.Overridable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center"
             android:visibility="gone"
             tools:visibility="visible"
             tools:text="\uD83D\uDC4D" />
@@ -54,10 +50,6 @@
         <Button
             android:id="@id/interactive_notification_action_1"
             style="@style/InteractiveNotificationTheme.Action.Overridable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center"
             android:visibility="gone"
             tools:visibility="visible"
             tools:text="\uD83D\uDC4E" />

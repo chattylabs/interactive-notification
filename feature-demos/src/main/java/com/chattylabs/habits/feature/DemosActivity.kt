@@ -26,7 +26,7 @@ class DemosActivity : AppCompatActivity() {
         InteractiveNotification.dismiss(this, ICONS_RIGHT_ID)
         InteractiveNotificationBuilder(
                 this, NotificationsReceiver::class.java,
-                "If you click thumbs-up emoji, it swaps to icons at bottom!", actions)
+                "If you click on thumbs-up, it swaps to icons at bottom!", actions)
                 .apply {
                     expandSubtitle = "Expand to view more.."
                 }
@@ -68,8 +68,8 @@ class DemosActivity : AppCompatActivity() {
 
     fun iconsBottomSizes(view: View) {
         val actions = listOf(
-                Action("400", "\uD83C\uDF56").apply { textSize = 20f },
-                Action("401", "\uD83C\uDF56").apply { textSize = 25f },
+                Action("400", "\uD83C\uDF56").apply { textSize = 50f },
+                Action("401", "\uD83C\uDF56").apply { textSize = 40f },
                 Action("402", "\uD83C\uDF56").apply { textSize = 30f })
 
         InteractiveNotification.dismiss(this, ICONS_BOTTOM_ID)

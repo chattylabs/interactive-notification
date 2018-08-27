@@ -92,7 +92,7 @@ internal class InteractiveNotificationImpl(
     private fun applyChildren(contentView: RemoteViews, notificationId: Int,
                               bigView: Boolean, increment: Int): Int {
         var next = increment + 10
-        actions.forEachIndexed { index, action ->
+        actions.take(4).forEachIndexed { index, action ->
             val pendingAction = Intent(context, receiver)
                     .putExtra(ACTION_ID, action.id)
                     .putExtra(NOTIFICATION_ID, notificationId).let {

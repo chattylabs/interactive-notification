@@ -17,5 +17,5 @@ class InteractiveNotificationBuilder(
     var expandSubtitle: CharSequence? = null
 
     fun build(): InteractiveNotification = InteractiveNotificationImpl(
-            context, receiver, contentTitle, expandSubtitle, actions )
+            context, receiver, contentTitle, expandSubtitle, actions)
 }
