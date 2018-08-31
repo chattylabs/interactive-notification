@@ -1,16 +1,5 @@
-//buildscript {
-//    repositories {
-//        maven { url "https://dl.bintray.com/chattylabs/maven" }
-//    }
-//}
-
 apply plugin: 'com.android.library'
 apply from: '../buildsystem/android.gradle'
-
-repositories {
-    maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url "https://dl.bintray.com/chattylabs/maven" }
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

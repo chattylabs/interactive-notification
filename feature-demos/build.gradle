@@ -2,12 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../buildsystem/android.gradle'
 
-repositories {
-    mavenCentral()
-    maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url "https://dl.bintray.com/chattylabs/maven" }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -18,10 +12,10 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // Components
-    implementation project(':component-core')
+    //implementation project(':component-core')
     implementation project(':component-interactive-notification')
-    implementation project(':component-assistant')
-    implementation project(':component-persistence')
+    //implementation project(':component-assistant')
+    //implementation project(':component-persistence')
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.15'
