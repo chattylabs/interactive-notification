@@ -6,22 +6,44 @@ import android.content.Intent
 
 interface InteractiveNotification {
 
-    class Action(val id: String, val text: String) {
+    interface Node {
+        val id: String
+    }
+
+    class Message(override val id: String,
+                  val text: String) : Node {
+        var loaded: ((Node) -> Unit)? = null
         var textSize: Float? = null
+    }
+
+    class Action(override val id: String, val text: String, val order: Int) :
+            Node, Comparable<Action> {
+        var textSize: Float? = null
+        override fun compareTo(other: Action): Int = other.order.compareTo(this.order)
+    }
+
+    class ActionList : ArrayList<Action>(), Node {
+        override val id: String = ""
     }
 
     class Utils {
         companion object {
-            @JvmStatic fun getActionId(intent: Intent): String? = intent.extras?.getString(ACTION_ID)
-            @JvmStatic fun getNotificationId(intent: Intent): Int = intent.extras?.getInt(NOTIFICATION_ID) ?:0
-            @JvmStatic fun isDismissed(intent: Intent): Boolean = intent.extras?.getBoolean(NOTIFICATION_DISMISSED) ?:false
+            @JvmStatic
+            fun getActionId(intent: Intent): String? = intent.extras?.getString(ACTION_ID)
+
+            @JvmStatic
+            fun getNotificationId(intent: Intent): Int = intent.extras?.getInt(NOTIFICATION_ID) ?: 0
+
+            @JvmStatic
+            fun isDismissed(intent: Intent): Boolean = intent.extras?.getBoolean(NOTIFICATION_DISMISSED)
+                    ?: false
         }
     }
 
     fun show(notificationId: Int)
 
     companion object {
-        fun dismiss(context: Context, notificationId: Int) {
+        internal fun dismiss(context: Context, notificationId: Int) {
             val notificationManager: NotificationManager = context.applicationContext
                     .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.cancel(notificationId)

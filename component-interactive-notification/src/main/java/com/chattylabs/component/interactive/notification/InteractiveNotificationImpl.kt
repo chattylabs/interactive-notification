@@ -3,7 +3,6 @@ package com.chattylabs.component.interactive.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -16,7 +15,6 @@ import com.chattylabs.component.interactive.notification.InteractiveNotification
 
 internal class InteractiveNotificationImpl(
         private val context: Context,
-        private val receiver: Class<out BroadcastReceiver>,
         private val contentTitle: CharSequence,
         private val expandSubtitle: CharSequence?,
         private val actions: List<Action>) :
@@ -48,10 +46,10 @@ internal class InteractiveNotificationImpl(
             applyChildren(it, notificationId, true, index)
         }
 
-        val dismissPendingAction = Intent(context, receiver)
+        val dismissPendingAction = Intent(context, InteractiveNotificationService::class.java)
                 .putExtra(NOTIFICATION_ID, notificationId)
                 .putExtra(NOTIFICATION_DISMISSED, true).let {
-                    PendingIntent.getBroadcast(
+                    PendingIntent.getService(
                             context, notificationId, it, PendingIntent.FLAG_CANCEL_CURRENT)
                 }
 
@@ -93,16 +91,17 @@ internal class InteractiveNotificationImpl(
                               bigView: Boolean, increment: Int): Int {
         var next = increment + 10
         actions.take(4).forEachIndexed { index, action ->
-            val pendingAction = Intent(context, receiver)
+            val pendingAction = Intent(context, InteractiveNotificationService::class.java)
                     .putExtra(ACTION_ID, action.id)
                     .putExtra(NOTIFICATION_ID, notificationId).let {
-                        PendingIntent.getBroadcast(
+                        PendingIntent.getService(
                                 context, next, it, PendingIntent.FLAG_CANCEL_CURRENT)
                     }
             val key = getActionKey(index)
             contentView.setTextViewText(key, action.text)
             contentView.setViewVisibility(key, View.VISIBLE)
-            action.textSize?.also { contentView.setTextViewTextSize(key,TypedValue.COMPLEX_UNIT_SP, it) }
+            action.textSize?.also {
+                contentView.setTextViewTextSize(key,TypedValue.COMPLEX_UNIT_SP, it) }
             if (bigView) contentView.setFloat(key, "setTextScaleX", 1.1f)
             contentView.setOnClickPendingIntent(key, pendingAction)
             next++
@@ -126,7 +125,7 @@ internal class InteractiveNotificationImpl(
         private val ACTION_3 = R.id.interactive_notification_action_3
         private val ACTION_4 = R.id.interactive_notification_action_4
 
-        private val CHANNEL_ID = "channelId"
-        private val CHANNEL_NAME = "Interactive Notification"
+        private const val CHANNEL_ID = "channelId"
+        private const val CHANNEL_NAME = "Interactive Notification"
     }
 }

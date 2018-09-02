@@ -2,6 +2,17 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../buildsystem/android.gradle'
 
+android {
+    //defaultPublishConfig "debug"
+    //publishNonDefault true
+    buildTypes {
+        demo {
+            initWith(buildTypes.debug)
+            matchingFallbacks = ['debug', 'release']
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
