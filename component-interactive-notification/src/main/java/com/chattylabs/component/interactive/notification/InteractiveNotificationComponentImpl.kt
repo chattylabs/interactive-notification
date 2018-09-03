@@ -120,7 +120,6 @@ internal class InteractiveNotificationComponentImpl :
                 .apply {
                     expandSubtitle = "Expand to view more.." // TODO
                 }.build().show(notificationId)
-        node.loaded?.let { it(node) }
     }
 
     private fun getNext(): InteractiveNotification.Node? {

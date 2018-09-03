@@ -10,16 +10,18 @@ interface InteractiveNotification {
         val id: String
     }
 
+    //@Parcelize
     class Message(override val id: String,
-                  val text: String) : Node {
-        var loaded: ((Node) -> Unit)? = null
+                  val text: String) : Node//, Parcelable
+    {
         var textSize: Float? = null
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     class Action(override val id: String, val text: String, val order: Int) :
             Node, Comparable<Action> {
         var textSize: Float? = null
-        override fun compareTo(other: Action): Int = other.order.compareTo(this.order)
+        override fun compareTo(other: Action): Int = Integer.compare(order, other.order)
     }
 
     class ActionList : ArrayList<Action>(), Node {

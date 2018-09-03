@@ -1,6 +1,10 @@
 apply plugin: 'com.android.library'
 apply from: '../buildsystem/android.gradle'
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
