@@ -116,7 +116,7 @@ internal class InteractiveNotificationComponentImpl :
         } else currentNode = node
         InteractiveNotificationBuilder(context,
                 (node as InteractiveNotification.Message).text,
-                actions as InteractiveNotification.ActionList)
+                if (actions.isEmpty()) actions else actions as InteractiveNotification.ActionList)
                 .apply {
                     expandSubtitle = "Expand to view more.." // TODO
                 }.build().show(notificationId)
