@@ -5,7 +5,7 @@
 
     <application>
         <activity
-            android:name=".DemosActivity"
+            android:name=".demo.DemosActivity"
             android:label="@string/module_name"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
@@ -17,7 +17,7 @@
         </activity>
 
         <receiver
-            android:name=".NotificationsReceiver"
+            android:name=".demo.DemoNotificationsReceiver"
             android:enabled="true"
             android:exported="false"/>
     </application>

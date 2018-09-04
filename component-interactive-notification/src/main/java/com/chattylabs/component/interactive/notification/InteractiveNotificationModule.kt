@@ -10,7 +10,6 @@ object InteractiveNotificationModule {
 
     @JvmStatic
     fun provideComponent(context: Context,
-                         receiver: Class<out BroadcastReceiver>,
                          logger: ILogger) = InteractiveNotificationComponentImpl
             .Instance.get().apply {
         (this as InteractiveNotificationComponentImpl).apply {
@@ -18,7 +17,6 @@ object InteractiveNotificationModule {
                 setBuildDebug(BuildConfig.DEBUG)
             }
             this.context = context as? Application ?: context.applicationContext
-            this.receiver = receiver
         }
     }
 }

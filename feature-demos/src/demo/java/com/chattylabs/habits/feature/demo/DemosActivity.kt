@@ -1,4 +1,4 @@
-package com.chattylabs.habits.feature
+package com.chattylabs.habits.feature.demo
 
 import android.os.Bundle
 import android.view.View
@@ -17,6 +17,7 @@ class DemosActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         if (!BuildConfig.DEBUG) finish()
         setContentView(R.layout.activity_demos)
+        component.setReceiver(DemoNotificationsReceiver::class.java)
     }
 
     fun iconsRight(view: View) {

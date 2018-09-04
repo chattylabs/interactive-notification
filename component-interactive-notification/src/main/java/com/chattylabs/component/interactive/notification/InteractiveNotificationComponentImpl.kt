@@ -12,7 +12,6 @@ internal class InteractiveNotificationComponentImpl :
         InteractiveNotificationFlow.Edge(), InteractiveNotificationComponent {
 
     lateinit var context: Context @Inject set
-    lateinit var receiver: Class<out BroadcastReceiver> @Inject set
 
     internal lateinit var logger: ILogger @Inject set
 
@@ -36,6 +35,12 @@ internal class InteractiveNotificationComponentImpl :
 
     init {
         Instance.instanceOf = SoftReference(this)
+    }
+
+    internal lateinit var receiver: Class<out BroadcastReceiver>
+
+    override fun setReceiver(receiver: Class<out BroadcastReceiver>) {
+        this.receiver = receiver
     }
 
     override fun release() = mGraph.clear()

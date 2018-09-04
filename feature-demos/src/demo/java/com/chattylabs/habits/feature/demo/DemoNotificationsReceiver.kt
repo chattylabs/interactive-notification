@@ -8,7 +8,7 @@ import com.chattylabs.component.interactive.notification.InteractiveNotification
 import dagger.android.DaggerBroadcastReceiver
 import javax.inject.Inject
 
-class NotificationsReceiver : DaggerBroadcastReceiver() {
+class DemoNotificationsReceiver : DaggerBroadcastReceiver() {
 
     @Inject lateinit var component: InteractiveNotificationComponent
 
