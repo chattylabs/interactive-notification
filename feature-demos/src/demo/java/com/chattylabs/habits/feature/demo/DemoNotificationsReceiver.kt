@@ -10,8 +10,6 @@ import javax.inject.Inject
 
 class DemoNotificationsReceiver : DaggerBroadcastReceiver() {
 
-    @Inject lateinit var component: InteractiveNotificationComponent
-
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
@@ -25,8 +23,6 @@ class DemoNotificationsReceiver : DaggerBroadcastReceiver() {
         else {
             Toast.makeText(context, "Id: $notificationId - Action: $actionId",
                     Toast.LENGTH_LONG).show()
-
-            component.next()
         }
     }
 }

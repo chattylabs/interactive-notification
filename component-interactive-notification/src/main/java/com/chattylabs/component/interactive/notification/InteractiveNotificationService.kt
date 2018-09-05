@@ -2,6 +2,7 @@ package com.chattylabs.component.interactive.notification
 
 import android.app.IntentService
 import android.content.Intent
+import android.widget.Toast
 import com.chattylabs.component.interactive.notification.InteractiveNotificationComponentImpl.*
 import java.util.ArrayList
 
@@ -17,10 +18,13 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
             val isDismissed = InteractiveNotification.Utils.isDismissed(this)
             val component = Instance.get() as InteractiveNotificationComponentImpl
             if (consumedActions.contains(actionId)) return
+            Toast.makeText(applicationContext,
+                    "Reached action: $actionId", Toast.LENGTH_LONG).show()
             if (!isDismissed) component.currentNode = component.getNode(actionId!!)
             applicationContext.sendBroadcast(
                     Intent(applicationContext, component.receiver).putExtras(extras!!))
             consumedActions.add(actionId!!)
+            component.next()
         }
     }
 }
