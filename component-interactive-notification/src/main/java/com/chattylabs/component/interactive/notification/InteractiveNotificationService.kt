@@ -4,7 +4,6 @@ import android.app.IntentService
 import android.content.Intent
 import android.widget.Toast
 import com.chattylabs.component.interactive.notification.InteractiveNotificationComponentImpl.Instance
-import java.util.*
 
 class InteractiveNotificationService : IntentService("InteractiveNotificationService") {
 
@@ -14,6 +13,8 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
 
     override fun onHandleIntent(intent: Intent?) {
         intent?.run {
+            val graph = InteractiveNotification.Utils.getGraph(this)
+            val notificationId = InteractiveNotification.Utils.getNotificationId(this)
             val receiver = InteractiveNotification.Utils.getReceiverClass(this)
             val messageId = InteractiveNotification.Utils.getMessageId(this)
             val actionId = InteractiveNotification.Utils.getActionId(this)
@@ -25,7 +26,15 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
                 Toast.makeText(applicationContext,
                         "Reached action: $messageId.$actionId", Toast.LENGTH_LONG).show()
             if (!isDismissed) {
-                component.currentNode = component.getNode("$messageId.$actionId")
+                try {
+                    component.currentNode = component.getNode("$messageId.$actionId")
+                } catch (ignore: Exception) {
+                    @Suppress("UNCHECKED_CAST")
+                    component.graph = graph as LinkedHashMap<InteractiveNotification.Node,
+                            ArrayList<InteractiveNotification.Node>>
+                    component.notificationId = notificationId
+                    component.currentNode = component.getNode("$messageId.$actionId")
+                }
                 component.next()
             } else component.release()
             applicationContext.sendBroadcast(

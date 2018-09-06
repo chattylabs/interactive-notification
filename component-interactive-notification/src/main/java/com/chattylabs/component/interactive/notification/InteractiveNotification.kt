@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 interface InteractiveNotification {
 
@@ -12,18 +15,16 @@ interface InteractiveNotification {
         val id: String
     }
 
-    //@Parcelize
+    @Parcelize
     class Message(override val id: String,
                   val text: String,
-                  val extras: HashMap<String, String> = hashMapOf()) : Node//, Parcelable
-    {
-        var textSize: Float? = null
-    }
+                  val extras: HashMap<String, String> = hashMapOf()) : Node, Parcelable
 
     @Suppress("MemberVisibilityCanBePrivate")
-    class Action(override val id: String, val text: String, val order: Int) :
-            Node, Comparable<Action> {
-        var textSize: Float? = null
+    @Parcelize
+    class Action(override val id: String, val text: String, val order: Int,
+                 var textSize: Float? = null) :
+            Node, Parcelable, Comparable<Action> {
         override fun compareTo(other: Action): Int = Integer.compare(order, other.order)
     }
 
@@ -33,6 +34,9 @@ interface InteractiveNotification {
 
     class Utils {
         companion object {
+
+            @JvmStatic
+            fun getGraph(intent: Intent): Serializable? = intent.extras?.getSerializable(GRAPH)
 
             @JvmStatic
             fun getMessageExtras(intent: Intent): Bundle? = intent.extras?.getBundle(MESSAGE_EXTRA)
@@ -72,6 +76,7 @@ interface InteractiveNotification {
 }
 
 // internal use
+internal const val GRAPH = "graph"
 internal const val RECEIVER_CLASS = "receiver_class"
 internal const val MESSAGE_EXTRA = "message_extra"
 internal const val MESSAGE_ID = "message_id"

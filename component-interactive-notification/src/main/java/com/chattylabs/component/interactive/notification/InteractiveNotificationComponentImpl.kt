@@ -2,10 +2,8 @@ package com.chattylabs.component.interactive.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.support.v4.util.SimpleArrayMap
 import com.chattylabs.sdk.android.common.internal.ILogger
 import java.lang.ref.SoftReference
-import java.util.*
 import javax.inject.Inject
 
 internal class InteractiveNotificationComponentImpl :
@@ -15,12 +13,13 @@ internal class InteractiveNotificationComponentImpl :
 
     internal lateinit var logger: ILogger @Inject set
 
-    private val mGraph = SimpleArrayMap<InteractiveNotification.Node, ArrayList<InteractiveNotification.Node>>()
+    internal var graph = LinkedHashMap<InteractiveNotification.Node, ArrayList<InteractiveNotification.Node>>()
 
     internal lateinit var currentNode: InteractiveNotification.Node @Inject set
 
-    private var done: Runnable? = null
-    private var notificationId: Int = DEFAULT_ID
+    private var done: Runnable? = null // TODO remove
+
+    internal var notificationId: Int = DEFAULT_ID
 
     internal object Instance {
         lateinit var instanceOf: SoftReference<InteractiveNotificationComponent>
@@ -37,13 +36,13 @@ internal class InteractiveNotificationComponentImpl :
         Instance.instanceOf = SoftReference(this)
     }
 
-    internal lateinit var receiver: Class<out BroadcastReceiver>
+    private lateinit var receiver: Class<out BroadcastReceiver>
 
     override fun setReceiver(receiver: Class<out BroadcastReceiver>) {
         this.receiver = receiver
     }
 
-    override fun release() = mGraph.clear()
+    override fun release() = graph.clear()
             .also { cancel() }
             .also { done = null }
 
@@ -71,40 +70,35 @@ internal class InteractiveNotificationComponentImpl :
 
     override fun addEdge(node: InteractiveNotification.Node,
                          incomingEdge: InteractiveNotification.Node) {
-        val originNodeExists = mGraph.containsKey(node)
-        if (!originNodeExists || !mGraph.containsKey(incomingEdge)) {
+        val originNodeExists = graph.containsKey(node)
+        if (!originNodeExists || !graph.containsKey(incomingEdge)) {
             throw IllegalArgumentException("All Nodes must exist in the graph " +
                     "before to be added as an edge. The Node [" +
                     if (!originNodeExists) node.id else incomingEdge.id + "] " +
                     "does not exist in the graph. Did you forget to call addNode(Node)?"
             )
         }
-        var edges: ArrayList<InteractiveNotification.Node>? = mGraph.get(node)
+        var edges: ArrayList<InteractiveNotification.Node>? = graph[node]
         if (edges == null) {
             edges = arrayListOf()
-            mGraph.put(node, edges)
+            graph[node] = edges
         }
         edges.add(incomingEdge)
     }
 
     override fun addNode(node: InteractiveNotification.Node) {
-        if (!mGraph.containsKey(node)) {
-            mGraph.put(node, null)
+        if (!graph.containsKey(node)) {
+            graph[node] = arrayListOf()
         }
     }
 
     override fun getNode(id: String): InteractiveNotification.Node {
-        var i = 0
-        val size = mGraph.size()
-        while (i < size) {
-            val node = mGraph.keyAt(i)
-            if (node.id == id) {
-                return node
-            }
-            i++
+        try {
+            return graph.filterKeys { it.id == id }.keys.first()
+        } catch (ignore: Exception) {
+            throw IllegalArgumentException("The Node [" + id + "] does not exists in the graph. " +
+                    "Did you forget to call addNode(Node)?")
         }
-        throw IllegalArgumentException("The Node [" + id + "] does not exists in the graph. " +
-                "Did you forget to call addNode(Node)?")
     }
 
     private fun show(node: InteractiveNotification.Node?) {
@@ -121,7 +115,7 @@ internal class InteractiveNotificationComponentImpl :
             actions = getOutgoingNode(outgoingEdges) as InteractiveNotification.ActionList
             currentNode = actions
         } else currentNode = node
-        InteractiveNotificationBuilder(context, node, receiver,
+        InteractiveNotificationBuilder(context, graph, node, receiver,
                 if (actions.isEmpty()) actions else actions as InteractiveNotification.ActionList)
                 .apply {
                     expandSubtitle = "Expand to view more.." // TODO
@@ -173,24 +167,11 @@ internal class InteractiveNotificationComponentImpl :
 
     private fun getIncomingEdges(node: InteractiveNotification.Node):
             ArrayList<InteractiveNotification.Node>? {
-        return mGraph.get(node)
+        return graph[node]
     }
 
     private fun getOutgoingEdges(node: InteractiveNotification.Node):
             ArrayList<InteractiveNotification.Node>? {
-        var result: ArrayList<InteractiveNotification.Node>? = null
-        var i = 0
-        val size = mGraph.size()
-        while (i < size) {
-            val edges = mGraph.valueAt(i)
-            if (edges != null && edges.contains(node)) {
-                if (result == null) {
-                    result = ArrayList()
-                }
-                result.add(mGraph.keyAt(i))
-            }
-            i++
-        }
-        return result
+        return graph.filter { it.value.contains(node) }.keys.toCollection(arrayListOf())
     }
 }

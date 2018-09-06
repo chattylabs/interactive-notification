@@ -14,9 +14,11 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import com.chattylabs.component.interactive.notification.InteractiveNotification.*
+import java.io.Serializable
 
 internal class InteractiveNotificationImpl(
         private val context: Context,
+        private val graph: Serializable,
         private val node: Node,
         private val receiver: Class<out BroadcastReceiver>,
         private val expandSubtitle: CharSequence?,
@@ -58,6 +60,7 @@ internal class InteractiveNotificationImpl(
                 .putExtra(RECEIVER_CLASS, receiver.canonicalName)
                 .putExtra(MESSAGE_ID, node.id)
                 .putExtra(MESSAGE_EXTRA, bundle)
+                .putExtra(GRAPH,  graph)
                 .putExtra(NOTIFICATION_ID, notificationId)
                 .putExtra(NOTIFICATION_DISMISSED, true).let {
                     PendingIntent.getService(
@@ -106,6 +109,7 @@ internal class InteractiveNotificationImpl(
                     .putExtra(RECEIVER_CLASS, receiver.canonicalName)
                     .putExtra(MESSAGE_ID, node.id)
                     .putExtra(MESSAGE_EXTRA, bundle)
+                    .putExtra(GRAPH,  graph)
                     .putExtra(ACTION_ID, action.id.removePrefix("${node.id}."))
                     .putExtra(NOTIFICATION_ID, notificationId).let {
                         PendingIntent.getService(
