@@ -17,14 +17,17 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
             val actionId = InteractiveNotification.Utils.getActionId(this)
             val isDismissed = InteractiveNotification.Utils.isDismissed(this)
             val component = Instance.get() as InteractiveNotificationComponentImpl
-            if (consumedActions.contains(actionId)) return
-            Toast.makeText(applicationContext,
-                    "Reached action: $actionId", Toast.LENGTH_LONG).show()
-            if (!isDismissed) component.currentNode = component.getNode(actionId!!)
+            if (actionId == null || consumedActions.contains(actionId)) return
+            consumedActions.add(actionId)
+            if (BuildConfig.DEBUG)
+                Toast.makeText(applicationContext,
+                        "Reached action: $actionId", Toast.LENGTH_LONG).show()
+            if (!isDismissed) {
+                component.currentNode = component.getNode(actionId)
+                component.next()
+            }
             applicationContext.sendBroadcast(
                     Intent(applicationContext, component.receiver).putExtras(extras!!))
-            consumedActions.add(actionId!!)
-            component.next()
         }
     }
 }

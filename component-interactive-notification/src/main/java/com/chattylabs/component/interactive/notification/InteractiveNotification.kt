@@ -12,6 +12,7 @@ interface InteractiveNotification {
 
     //@Parcelize
     class Message(override val id: String,
+                  val type: String = "",
                   val text: String) : Node//, Parcelable
     {
         var textSize: Float? = null
@@ -31,10 +32,16 @@ interface InteractiveNotification {
     class Utils {
         companion object {
             @JvmStatic
+            fun getMessageId(intent: Intent): String? = intent.extras?.getString(MESSAGE_ID)
+
+            @JvmStatic
+            fun getMessageType(intent: Intent): String? = intent.extras?.getString(MESSAGE_TYPE)
+
+            @JvmStatic
             fun getActionId(intent: Intent): String? = intent.extras?.getString(ACTION_ID)
 
             @JvmStatic
-            fun getNotificationId(intent: Intent): Int = intent.extras?.getInt(NOTIFICATION_ID) ?: 0
+            fun getNotificationId(intent: Intent): Int = intent.extras?.getInt(NOTIFICATION_ID) ?: -1
 
             @JvmStatic
             fun isDismissed(intent: Intent): Boolean = intent.extras?.getBoolean(NOTIFICATION_DISMISSED)
@@ -54,6 +61,8 @@ interface InteractiveNotification {
 }
 
 // internal use
+internal const val MESSAGE_ID = "message_id"
+internal const val MESSAGE_TYPE = "message_type"
 internal const val ACTION_ID = "action_id"
 internal const val NOTIFICATION_ID = "notification_id"
 internal const val NOTIFICATION_DISMISSED = "notification_dismissed"

@@ -12,10 +12,12 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import com.chattylabs.component.interactive.notification.InteractiveNotification.Action
+import com.chattylabs.component.interactive.notification.InteractiveNotification.Node
+import com.chattylabs.component.interactive.notification.InteractiveNotification.Message
 
 internal class InteractiveNotificationImpl(
         private val context: Context,
-        private val contentTitle: CharSequence,
+        private val node: Node,
         private val expandSubtitle: CharSequence?,
         private val actions: List<Action>) :
         InteractiveNotificationAdapter(context) {
@@ -47,6 +49,8 @@ internal class InteractiveNotificationImpl(
         }
 
         val dismissPendingAction = Intent(context, InteractiveNotificationService::class.java)
+                .putExtra(MESSAGE_ID, node.id)
+                .putExtra(MESSAGE_TYPE, (node as Message).type)
                 .putExtra(NOTIFICATION_ID, notificationId)
                 .putExtra(NOTIFICATION_DISMISSED, true).let {
                     PendingIntent.getService(
@@ -55,7 +59,7 @@ internal class InteractiveNotificationImpl(
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(context.applicationInfo.icon)
-                .setTicker(contentTitle)
+                .setTicker(node.text)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(contentView)
                 .setCustomBigContentView(bigContentView)
@@ -79,7 +83,7 @@ internal class InteractiveNotificationImpl(
 
     private fun applyToContent(contentView: RemoteViews, expandSubtitle:CharSequence? = null) {
         contentView.apply {
-            setTextViewText(R.id.interactive_notification_title, contentTitle)
+            setTextViewText(R.id.interactive_notification_title, (node as Message).text)
             expandSubtitle?.run {
                 setTextViewText(R.id.interactive_notification_info, this)
                 setViewVisibility(R.id.interactive_notification_info, View.VISIBLE)
@@ -92,6 +96,8 @@ internal class InteractiveNotificationImpl(
         var next = increment + 10
         actions.take(4).forEachIndexed { index, action ->
             val pendingAction = Intent(context, InteractiveNotificationService::class.java)
+                    .putExtra(MESSAGE_ID, node.id)
+                    .putExtra(MESSAGE_TYPE, (node as Message).type)
                     .putExtra(ACTION_ID, action.id)
                     .putExtra(NOTIFICATION_ID, notificationId).let {
                         PendingIntent.getService(

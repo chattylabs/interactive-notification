@@ -119,8 +119,7 @@ internal class InteractiveNotificationComponentImpl :
             actions = getOutgoingNode(outgoingEdges) as InteractiveNotification.ActionList
             currentNode = actions
         } else currentNode = node
-        InteractiveNotificationBuilder(context,
-                (node as InteractiveNotification.Message).text,
+        InteractiveNotificationBuilder(context, node,
                 if (actions.isEmpty()) actions else actions as InteractiveNotification.ActionList)
                 .apply {
                     expandSubtitle = "Expand to view more.." // TODO

@@ -5,11 +5,11 @@ import com.chattylabs.component.interactive.notification.InteractiveNotification
 
 internal class InteractiveNotificationBuilder(
         private val context: Context,
-        private val contentTitle: CharSequence,
+        private val node: InteractiveNotification.Node,
         private val actions: List<Action>) {
 
     var expandSubtitle: CharSequence? = null
 
     fun build(): InteractiveNotification = InteractiveNotificationImpl(
-            context, contentTitle, expandSubtitle, actions)
+            context, node, expandSubtitle, actions)
 }
