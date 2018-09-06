@@ -59,7 +59,9 @@ internal class InteractiveNotificationComponentImpl :
         } else throw IllegalStateException("Only a Message can start the flow.")
     }
 
-    override fun cancel() = InteractiveNotification.dismiss(context, notificationId)
+    override fun cancel() {
+        InteractiveNotification.dismiss(context, notificationId)
+    }
 
     override fun next() = show(getNext())
 
@@ -107,7 +109,7 @@ internal class InteractiveNotificationComponentImpl :
 
     private fun show(node: InteractiveNotification.Node?) {
         node?.also { n -> loadNotification(n) } ?: {
-            cancel() // Otherwise there is no more nodes
+            release() // Otherwise there is no more nodes
             done?.run()
         }.invoke()
     }
@@ -119,7 +121,7 @@ internal class InteractiveNotificationComponentImpl :
             actions = getOutgoingNode(outgoingEdges) as InteractiveNotification.ActionList
             currentNode = actions
         } else currentNode = node
-        InteractiveNotificationBuilder(context, node,
+        InteractiveNotificationBuilder(context, node, receiver,
                 if (actions.isEmpty()) actions else actions as InteractiveNotification.ActionList)
                 .apply {
                     expandSubtitle = "Expand to view more.." // TODO

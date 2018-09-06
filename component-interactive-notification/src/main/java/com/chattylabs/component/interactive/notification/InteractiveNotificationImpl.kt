@@ -3,21 +3,22 @@ package com.chattylabs.component.interactive.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
-import com.chattylabs.component.interactive.notification.InteractiveNotification.Action
-import com.chattylabs.component.interactive.notification.InteractiveNotification.Node
-import com.chattylabs.component.interactive.notification.InteractiveNotification.Message
+import com.chattylabs.component.interactive.notification.InteractiveNotification.*
 
 internal class InteractiveNotificationImpl(
         private val context: Context,
         private val node: Node,
+        private val receiver: Class<out BroadcastReceiver>,
         private val expandSubtitle: CharSequence?,
         private val actions: List<Action>) :
         InteractiveNotificationAdapter(context) {
@@ -38,19 +39,25 @@ internal class InteractiveNotificationImpl(
     override fun create(notificationId: Int): NotificationCompat.Builder {
         var index = 0
 
+        val bundle = Bundle()
+        (node as Message).extras.forEach { bundle.putString(it.key, it.value) }
+
         val contentView = RemoteViews(context.packageName, layout()).also {
             applyToContent(it, expandSubtitle)
-            if (actions.size in 1..2) index = applyChildren(it, notificationId, false, index)
+            if (actions.size in 1..2)
+                index = applyChildren(it, notificationId, false, index, bundle)
         }
 
         val bigContentView = RemoteViews(context.packageName, layout()).also {
             applyToContent(it)
-            applyChildren(it, notificationId, true, index)
+            applyChildren(it, notificationId, true, index, bundle)
         }
 
+
         val dismissPendingAction = Intent(context, InteractiveNotificationService::class.java)
+                .putExtra(RECEIVER_CLASS, receiver.canonicalName)
                 .putExtra(MESSAGE_ID, node.id)
-                .putExtra(MESSAGE_TYPE, (node as Message).type)
+                .putExtra(MESSAGE_EXTRA, bundle)
                 .putExtra(NOTIFICATION_ID, notificationId)
                 .putExtra(NOTIFICATION_DISMISSED, true).let {
                     PendingIntent.getService(
@@ -92,13 +99,14 @@ internal class InteractiveNotificationImpl(
     }
 
     private fun applyChildren(contentView: RemoteViews, notificationId: Int,
-                              bigView: Boolean, increment: Int): Int {
+                              bigView: Boolean, increment: Int, bundle: Bundle): Int {
         var next = increment + 10
         actions.take(4).forEachIndexed { index, action ->
             val pendingAction = Intent(context, InteractiveNotificationService::class.java)
+                    .putExtra(RECEIVER_CLASS, receiver.canonicalName)
                     .putExtra(MESSAGE_ID, node.id)
-                    .putExtra(MESSAGE_TYPE, (node as Message).type)
-                    .putExtra(ACTION_ID, action.id)
+                    .putExtra(MESSAGE_EXTRA, bundle)
+                    .putExtra(ACTION_ID, action.id.removePrefix("${node.id}."))
                     .putExtra(NOTIFICATION_ID, notificationId).let {
                         PendingIntent.getService(
                                 context, next, it, PendingIntent.FLAG_CANCEL_CURRENT)

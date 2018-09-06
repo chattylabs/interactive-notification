@@ -3,8 +3,8 @@ package com.chattylabs.component.interactive.notification
 import android.app.IntentService
 import android.content.Intent
 import android.widget.Toast
-import com.chattylabs.component.interactive.notification.InteractiveNotificationComponentImpl.*
-import java.util.ArrayList
+import com.chattylabs.component.interactive.notification.InteractiveNotificationComponentImpl.Instance
+import java.util.*
 
 class InteractiveNotificationService : IntentService("InteractiveNotificationService") {
 
@@ -14,6 +14,8 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
 
     override fun onHandleIntent(intent: Intent?) {
         intent?.run {
+            val receiver = InteractiveNotification.Utils.getReceiverClass(this)
+            val messageId = InteractiveNotification.Utils.getMessageId(this)
             val actionId = InteractiveNotification.Utils.getActionId(this)
             val isDismissed = InteractiveNotification.Utils.isDismissed(this)
             val component = Instance.get() as InteractiveNotificationComponentImpl
@@ -21,13 +23,14 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
             consumedActions.add(actionId)
             if (BuildConfig.DEBUG)
                 Toast.makeText(applicationContext,
-                        "Reached action: $actionId", Toast.LENGTH_LONG).show()
+                        "Reached action: $messageId.$actionId", Toast.LENGTH_LONG).show()
             if (!isDismissed) {
-                component.currentNode = component.getNode(actionId)
+                component.currentNode = component.getNode("$messageId.$actionId")
                 component.next()
-            }
+            } else component.release()
             applicationContext.sendBroadcast(
-                    Intent(applicationContext, component.receiver).putExtras(extras!!))
+                    Intent(applicationContext, receiver)
+                            .setFlags(Intent.FLAG_RECEIVER_FOREGROUND).putExtras(extras!!))
         }
     }
 }

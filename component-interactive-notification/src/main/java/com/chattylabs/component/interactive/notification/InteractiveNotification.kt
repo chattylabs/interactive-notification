@@ -1,8 +1,10 @@
 package com.chattylabs.component.interactive.notification
 
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 
 interface InteractiveNotification {
 
@@ -12,8 +14,8 @@ interface InteractiveNotification {
 
     //@Parcelize
     class Message(override val id: String,
-                  val type: String = "",
-                  val text: String) : Node//, Parcelable
+                  val text: String,
+                  val extras: HashMap<String, String> = hashMapOf()) : Node//, Parcelable
     {
         var textSize: Float? = null
     }
@@ -31,11 +33,12 @@ interface InteractiveNotification {
 
     class Utils {
         companion object {
-            @JvmStatic
-            fun getMessageId(intent: Intent): String? = intent.extras?.getString(MESSAGE_ID)
 
             @JvmStatic
-            fun getMessageType(intent: Intent): String? = intent.extras?.getString(MESSAGE_TYPE)
+            fun getMessageExtras(intent: Intent): Bundle? = intent.extras?.getBundle(MESSAGE_EXTRA)
+
+            @JvmStatic
+            fun getMessageId(intent: Intent): String? = intent.extras?.getString(MESSAGE_ID)
 
             @JvmStatic
             fun getActionId(intent: Intent): String? = intent.extras?.getString(ACTION_ID)
@@ -46,6 +49,14 @@ interface InteractiveNotification {
             @JvmStatic
             fun isDismissed(intent: Intent): Boolean = intent.extras?.getBoolean(NOTIFICATION_DISMISSED)
                     ?: false
+
+            @JvmStatic
+            internal fun getReceiverClass(intent: Intent): Class<out BroadcastReceiver> {
+                return intent.extras?.run {
+                    @Suppress("UNCHECKED_CAST")
+                    Class.forName(this.getString(RECEIVER_CLASS)!!) as Class<out BroadcastReceiver>
+                }!!
+            }
         }
     }
 
@@ -61,8 +72,9 @@ interface InteractiveNotification {
 }
 
 // internal use
+internal const val RECEIVER_CLASS = "receiver_class"
+internal const val MESSAGE_EXTRA = "message_extra"
 internal const val MESSAGE_ID = "message_id"
-internal const val MESSAGE_TYPE = "message_type"
 internal const val ACTION_ID = "action_id"
 internal const val NOTIFICATION_ID = "notification_id"
 internal const val NOTIFICATION_DISMISSED = "notification_dismissed"
