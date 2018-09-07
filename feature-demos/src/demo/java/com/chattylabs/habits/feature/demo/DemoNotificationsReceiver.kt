@@ -1,12 +1,10 @@
-package com.chattylabs.habits.feature
+package com.chattylabs.habits.feature.demo
 
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.chattylabs.component.interactive.notification.InteractiveNotification
-import com.chattylabs.component.interactive.notification.InteractiveNotificationComponent
 import dagger.android.DaggerBroadcastReceiver
-import javax.inject.Inject
 
 class DemoNotificationsReceiver : DaggerBroadcastReceiver() {
 
