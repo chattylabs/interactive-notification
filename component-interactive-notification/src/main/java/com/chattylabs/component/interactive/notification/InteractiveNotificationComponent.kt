@@ -11,7 +11,7 @@ interface InteractiveNotificationComponent {
 
     fun getNode(id: String): InteractiveNotification.Node
 
-    fun create(notificationId: Int): InteractiveNotificationFlow
+    fun prepare(notificationId: Int): InteractiveNotificationFlow
 
     fun next()
 

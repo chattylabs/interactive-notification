@@ -46,7 +46,7 @@ internal class InteractiveNotificationComponentImpl :
             .also { cancel() }
             .also { done = null }
 
-    override fun create(notificationId: Int): InteractiveNotificationFlow {
+    override fun prepare(notificationId: Int): InteractiveNotificationFlow {
         this.notificationId = notificationId
         return InteractiveNotificationFlow(this)
     }
