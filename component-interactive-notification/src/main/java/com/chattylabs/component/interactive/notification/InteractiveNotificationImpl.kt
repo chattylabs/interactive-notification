@@ -42,7 +42,7 @@ internal class InteractiveNotificationImpl(
         var index = 0
 
         val bundle = Bundle()
-        (node as Message).extras.forEach { bundle.putString(it.key, it.value) }
+        (node as Message).extras.forEach { bundle.putStringArrayList(it.key, it.value) }
 
         val contentView = RemoteViews(context.packageName, layout()).also {
             applyToContent(it, expandSubtitle)
@@ -60,7 +60,7 @@ internal class InteractiveNotificationImpl(
                 .putExtra(RECEIVER_CLASS, receiver.canonicalName)
                 .putExtra(MESSAGE_ID, node.id)
                 .putExtra(MESSAGE_EXTRA, bundle)
-                .putExtra(GRAPH,  graph)
+                .putExtra(GRAPH, graph)
                 .putExtra(NOTIFICATION_ID, notificationId)
                 .putExtra(NOTIFICATION_DISMISSED, true).let {
                     PendingIntent.getService(

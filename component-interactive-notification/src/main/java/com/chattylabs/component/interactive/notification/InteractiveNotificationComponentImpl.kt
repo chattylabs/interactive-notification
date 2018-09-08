@@ -18,8 +18,6 @@ internal class InteractiveNotificationComponentImpl :
     
     internal lateinit var currentNode: Node @Inject set
     
-    private var done: Runnable? = null // TODO remove
-    
     internal var notificationId: Int = DEFAULT_ID
     
     internal object Instance {
@@ -44,9 +42,7 @@ internal class InteractiveNotificationComponentImpl :
         this.receiver = receiver
     }
     
-    override fun release() = graph.clear()
-            .also { cancel() }
-            .also { done = null }
+    private fun release() = graph.clear()
     
     override fun prepare(notificationId: Int): InteractiveNotificationFlow {
         this.notificationId = notificationId
@@ -62,14 +58,11 @@ internal class InteractiveNotificationComponentImpl :
     }
     
     override fun cancel() {
+        release()
         InteractiveNotification.dismiss(context, notificationId)
     }
     
     override fun next() = show(getNext())
-    
-    override fun onDone(callback: Runnable) {
-        this.done = callback
-    }
     
     override fun addEdge(node: Node,
                          incomingEdge: Node) {
@@ -108,8 +101,7 @@ internal class InteractiveNotificationComponentImpl :
     
     private fun show(node: Node?) {
         node?.also { n -> loadNotification(n) } ?: {
-            release() // Otherwise there is no more nodes
-            done?.run()
+            cancel() // Otherwise there is no more nodes
         }.invoke()
     }
     
@@ -136,8 +128,7 @@ internal class InteractiveNotificationComponentImpl :
         return getOutgoingNode(outgoingEdges)
     }
     
-    private fun getOutgoingNode(outgoingEdges: ArrayList<Node>):
-            Node {
+    private fun getOutgoingNode(outgoingEdges: ArrayList<Node>): Node {
         if (outgoingEdges.size > 0) {
             if (outgoingEdges.size == 1) {
                 val item = outgoingEdges[0]
@@ -155,8 +146,7 @@ internal class InteractiveNotificationComponentImpl :
         return emptyList<Action>() as InteractiveNotification.ActionList
     }
     
-    private fun getActionListFromEdges(edges: ArrayList<Node>):
-            InteractiveNotification.ActionList {
+    private fun getActionListFromEdges(edges: ArrayList<Node>): InteractiveNotification.ActionList {
         try {
             val actionList = InteractiveNotification.ActionList()
             var i = 0
@@ -174,13 +164,11 @@ internal class InteractiveNotificationComponentImpl :
         }
     }
     
-    private fun getIncomingEdges(node: Node):
-            ArrayList<Node>? {
+    private fun getIncomingEdges(node: Node): ArrayList<Node>? {
         return graph[node]
     }
     
-    private fun getOutgoingEdges(node: Node):
-            ArrayList<Node>? {
+    private fun getOutgoingEdges(node: Node): ArrayList<Node>? {
         return graph.filter { it.value.contains(node) }.keys.toCollection(arrayListOf())
     }
 }

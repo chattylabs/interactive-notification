@@ -16,15 +16,16 @@ interface InteractiveNotification {
     }
 
     @Parcelize
-    class Message(override val id: String,
+    data class Message(override val id: String,
                   val text: String,
-                  val extras: HashMap<String, String> = hashMapOf()) : Node, Parcelable
+                  val extras: HashMap<String, ArrayList<String>> = hashMapOf()) : Node, Parcelable
 
     @Suppress("MemberVisibilityCanBePrivate")
     @Parcelize
-    class Action(override val id: String, val text: String, val order: Int,
+    data class Action(override val id: String, val text: String, val order: Int,
                  var textSize: Float? = null) :
-            Node, Parcelable, Comparable<Action> {
+            Node, Comparable<Action>, Parcelable
+    {
         override fun compareTo(other: Action): Int = Integer.compare(order, other.order)
     }
 

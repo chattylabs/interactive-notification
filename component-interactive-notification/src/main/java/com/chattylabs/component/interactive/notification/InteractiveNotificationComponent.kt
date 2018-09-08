@@ -16,8 +16,4 @@ interface InteractiveNotificationComponent {
     fun next()
 
     fun cancel()
-
-    fun onDone(callback: Runnable)
-
-    fun release()
 }
