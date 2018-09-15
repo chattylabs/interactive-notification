@@ -2,7 +2,7 @@ package com.chattylabs.component.interactive.notification
 
 import android.app.Application
 import android.content.Context
-import com.chattylabs.sdk.android.common.internal.ILogger
+import com.chattylabs.android.commons.internal.ILogger
 
 object InteractiveNotificationModule {
 

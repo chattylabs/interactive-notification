@@ -2,8 +2,8 @@ package com.chattylabs.component.interactive.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import com.chattylabs.android.commons.internal.ILogger
 import com.chattylabs.component.interactive.notification.InteractiveNotification.*
-import com.chattylabs.sdk.android.common.internal.ILogger
 import java.lang.ref.SoftReference
 import javax.inject.Inject
 
