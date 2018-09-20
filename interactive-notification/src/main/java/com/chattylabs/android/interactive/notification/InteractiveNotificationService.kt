@@ -23,14 +23,14 @@ class InteractiveNotificationService : IntentService("InteractiveNotificationSer
             consumedActions.add("$messageId.$actionId")
             if (!isDismissed) {
                 try {
-                    component.currentNode = component.getNode("$messageId.$actionId")
+                    component.currentNode = component.getNode(actionId)
                 } catch (ignore: Exception) {
                     @Suppress("UNCHECKED_CAST")
                     component.graph =  graph as HashMap<Node, ArrayList<Node>>
                     component.context = applicationContext
                     component.setReceiver(receiver)
                     component.notificationId = notificationId
-                    component.currentNode = component.getNode("$messageId.$actionId")
+                    component.currentNode = component.getNode(actionId)
                 }
                 component.next()
             } else component.cancel()

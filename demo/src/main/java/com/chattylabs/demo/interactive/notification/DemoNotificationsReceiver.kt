@@ -3,7 +3,7 @@ package com.chattylabs.demo.interactive.notification
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.chattylabs.component.interactive.notification.InteractiveNotification
+import com.chattylabs.android.interactive.notification.InteractiveNotification
 import dagger.android.DaggerBroadcastReceiver
 
 class DemoNotificationsReceiver : DaggerBroadcastReceiver() {

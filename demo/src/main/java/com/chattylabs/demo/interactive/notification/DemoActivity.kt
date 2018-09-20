@@ -2,11 +2,9 @@ package com.chattylabs.demo.interactive.notification
 
 import android.os.Bundle
 import android.view.View
-import com.chattylabs.component.interactive.notification.InteractiveNotification.Action
-import com.chattylabs.component.interactive.notification.InteractiveNotification.Message
-import com.chattylabs.component.interactive.notification.InteractiveNotificationComponent
-import com.chattylabs.habits.feature.BuildConfig
-import com.chattylabs.habits.feature.R
+import com.chattylabs.android.interactive.notification.InteractiveNotification.Action
+import com.chattylabs.android.interactive.notification.InteractiveNotification.Message
+import com.chattylabs.android.interactive.notification.InteractiveNotificationComponent
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -29,7 +27,7 @@ class DemoActivity : DaggerAppCompatActivity() {
      */
     fun iconsRight(view: View) {
         with(component) {
-            release()
+            cancel()
 
             // Notification 1
             addNode(Message("1", "If you click on thumbs-up, it swaps to icons at bottom!"))
@@ -61,7 +59,7 @@ class DemoActivity : DaggerAppCompatActivity() {
      */
     fun iconsBottom(view: View) {
         with(component) {
-            release()
+            cancel()
 
             addNode(Action("300", ">>", 0, 18f))               // ⏩
             addNode(Action("301", ">>", 0, 18f))               // ⏩
@@ -114,7 +112,7 @@ class DemoActivity : DaggerAppCompatActivity() {
      */
     fun iconsBottomSizes(view: View) {
         with(component) {
-            release()
+            cancel()
 
             addNode(Message("4", "What size do you prefer?"))
             addNode(Action("400", "\uD83C\uDF56", 0, 50f))
