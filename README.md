@@ -11,7 +11,7 @@ Check: [VUI SDK](https://github.com/chattylabs/voice-user-interaction)
 This is an implementation on top of the current Android Notification component that allows you to build a flow
 of notifications and provides new customizable actions that can collect a rapid feedback from the user.
 
-<img src="art/poster.png" width="100%"/>
+<p align="center"><img src="art/poster.png" /></p>
 
 ## Why choosing this library?
 
@@ -34,6 +34,7 @@ The SDK works on Android version 5.0 (Lollipop) and above. _(for lower versions 
     }
 
     dependencies {
+    
         // Required
         implementation 'com.chattylabs.sdk.android:interactive-notification:<latest version>'
     }
