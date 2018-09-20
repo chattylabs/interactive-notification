@@ -1,4 +1,4 @@
-# interactive-notification (android)
+# interactive-notification (Android)
 
 |                   	     | TYPE  	    | VERSION 	            | STATUS 	          | COVERAGE                |
 |--------------------------- |:-------:	    |---------------------- |-------------------- |:-----------------------:|
@@ -6,7 +6,7 @@
 | `interactive-notification` | _library_  	| ![Latest version][v1] | ![Build Status][s1] | ![Coverage Status][c1]  |
 
 
-[VUI SDK](https://github.com/chattylabs/voice-user-interaction)
+Check: [VUI SDK](https://github.com/chattylabs/voice-user-interaction)
 
 This is an implementation on top of the current Android Notification component that allows you to build a flow
 of notifications and provides new customizable actions that can collect a rapid feedback from the user.
@@ -19,7 +19,7 @@ of notifications and provides new customizable actions that can collect a rapid 
 - Action events work even when the device is locked
 - Get a quick feedback by placing actions at right or at bottom
 - Use either emojis or text for the action buttons
-- You can customize Action and message styles
+- You can customize the actions and message styles
 - Add various actions with different sizes each
     
 ## Prerequisites
@@ -38,7 +38,7 @@ The SDK works on Android version 5.0 (Lollipop) and above. _(for lower versions 
         implementation 'com.chattylabs.sdk.android:interactive-notification:<latest version>'
     }
 
-### How to create a Notification?
+## How to create a Notification flow?
 
 The following is an example on how you can create a flow with 2 notifications.
 <br/>You can apply configurations to the actions like sorting or resizing.
@@ -85,8 +85,8 @@ with(component) {
 [v0]: https://img.shields.io/badge/demo-unplished-lightgrey.svg
 [v1]: https://api.bintray.com/packages/chattylabs/maven/interactive-notification/images/download.svg?label=Latest%20version
 
-[s0]: https://app.bitrise.io/app/140e33e4fa4ab888/status.svg?token=QxUVT4wZRj6JGkZb4zSVAA&branch=master
-[s1]: https://app.bitrise.io/app/0967af538a0efcc5/status.svg?token=95j60AolkTmhbMvDK5zhFw&branch=master
+[s0]: https://app.bitrise.io/app/4e16abe0098e0dcf/status.svg?token=B_KO07YfPteJ32E8avz6Lg&branch=master
+[s1]: https://app.bitrise.io/app/4e16abe0098e0dcf/status.svg?token=B_KO07YfPteJ32E8avz6Lg&branch=master
 
 [c0]: https://coveralls.io/repos/chattylabs/unknown/badge.svg?branch=master&service=github
 [c1]: https://coveralls.io/repos/chattylabs/interactive-notification/badge.svg?branch=master&service=github
