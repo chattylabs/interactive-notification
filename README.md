@@ -1,4 +1,4 @@
-# interactive-notification (Android)
+# <img src="art/logo.png" width="250px"/>
 
 |                   	     | TYPE  	    | VERSION 	            | STATUS 	          | COVERAGE                |
 |--------------------------- |:-------:	    |---------------------- |-------------------- |:-----------------------:|
