@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.Compat.Notification.Title"
+            android:id="@+id/interactive_notification_title"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:text="Any random Title?"/>
+
+        <TextView
+            style="@style/TextAppearance.Compat.Notification.Line2"
+            android:id="@+id/interactive_notification_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            tools:text="Any random Subtitle?"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@id/interactive_notification_action_4"
+            style="@style/InteractiveNotificationTheme.Action.Overridable"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            android:id="@id/interactive_notification_action_3"
+            style="@style/InteractiveNotificationTheme.Action.Overridable"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            android:id="@id/interactive_notification_action_2"
+            style="@style/InteractiveNotificationTheme.Action.Overridable"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="\uD83D\uDE03" />
+
+        <Button
+            android:id="@id/interactive_notification_action_1"
+            style="@style/InteractiveNotificationTheme.Action.Overridable"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="\uD83D\uDE03" />
+
+    </LinearLayout>
+
+</LinearLayout>

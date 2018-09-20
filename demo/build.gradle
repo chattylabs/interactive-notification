@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://dl.bintray.com/chattylabs/maven" }
+    }
+}
+
+repositories {
+    maven { url "https://dl.bintray.com/chattylabs/maven" }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.chattylabs.versioning'
+apply from: '../buildsystem/android.gradle'
+
+versioning {
+
+    tagPrefix "demo-version/"
+
+    keywords {
+        minor "[demo-feature]"
+        patch "[demo-bug]", "[demo-patch]"
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+android {
+    defaultConfig {
+        applicationId "com.chattylabs.demo.interactive.notification"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        versionCode versioning.code()
+        versionName versioning.name()
+    }
+    signingConfigs {
+        debug {
+            storeFile file("../buildsystem/debug.keystore")
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Android
+    implementation "com.android.support:appcompat-v7:$support_library"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.15'
+    implementation 'com.google.dagger:dagger-android:2.15'
+    implementation 'com.google.dagger:dagger-android-support:2.15'
+    kapt 'com.google.dagger:dagger-compiler:2.15'
+    kapt 'com.google.dagger:dagger-android-processor:2.15'
+
+    // Dependencies
+    implementation project(':sdk-interactive-notification')
+}
