@@ -63,5 +63,5 @@ dependencies {
     kapt 'com.google.dagger:dagger-android-processor:2.15'
 
     // Dependencies
-    implementation project(':sdk-interactive-notification')
+    implementation project(':interactive-notification')
 }
