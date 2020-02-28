@@ -1,16 +1,18 @@
 package com.chattylabs.android.interactive.notification
 
-import android.content.BroadcastReceiver
+import android.app.IntentService
 import android.content.Context
-import com.chattylabs.android.commons.internal.ILogger
-import com.chattylabs.android.interactive.notification.InteractiveNotification.*
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
+import androidx.annotation.NonNull
+import chattylabs.android.commons.internal.ILogger
+import com.chattylabs.android.interactive.notification.Node.*
 import java.lang.ref.SoftReference
 import javax.inject.Inject
 
-internal class InteractiveNotificationComponentImpl :
-        InteractiveNotificationFlow.Edge(), InteractiveNotificationComponent {
+internal class Graph : Flow.Edge(), InteractiveNotification {
 
-    lateinit var context: Context @Inject set
+    internal lateinit var context: Context @Inject set
 
     internal lateinit var logger: ILogger @Inject set
 
@@ -18,14 +20,20 @@ internal class InteractiveNotificationComponentImpl :
 
     internal lateinit var currentNode: Node @Inject set
 
-    internal var notificationId: Int = DEFAULT_ID
+    internal lateinit var intentService: Class<out IntentService>
+
+    internal var notificationId: Int = 0
+
+    @IdRes internal var icon: Int = 0
+
+    internal lateinit var channelId: String
 
     internal object Instance {
-        lateinit var instanceOf: SoftReference<InteractiveNotificationComponent>
-        fun get(): InteractiveNotificationComponent {
+        lateinit var instanceOf: SoftReference<InteractiveNotification>
+        fun get(): InteractiveNotification {
             synchronized(Instance::class.java) {
                 return if (!Instance::instanceOf.isInitialized || instanceOf.get() == null) {
-                    InteractiveNotificationComponentImpl()
+                    Graph()
                 } else instanceOf.get()!!
             }
         }
@@ -35,20 +43,20 @@ internal class InteractiveNotificationComponentImpl :
         Instance.instanceOf = SoftReference(this)
     }
 
-    private lateinit var receiver: Class<out BroadcastReceiver>
-
-    override fun setReceiver(receiver: Class<out BroadcastReceiver>) {
-        this.receiver = receiver
+    override fun setIntentService(intentService: Class<out IntentService>) {
+        this.intentService = intentService
     }
 
     private fun release() = graph.clear()
 
-    override fun prepare(notificationId: Int): InteractiveNotificationFlow {
+    override fun prepare(notificationId: Int, channelId: String, @DrawableRes icon: Int): Flow {
         this.notificationId = notificationId
-        return InteractiveNotificationFlow(this)
+        this.channelId = channelId
+        this.icon = icon
+        return Flow(this)
     }
 
-    override fun start(node: Node) {
+    override fun start(@NonNull node: Node) {
         if (node is Message) {
             currentNode = node
             show(currentNode)
@@ -57,7 +65,7 @@ internal class InteractiveNotificationComponentImpl :
 
     override fun cancel() {
         release()
-        InteractiveNotification.dismiss(context, notificationId)
+        Node.dismiss(context, notificationId)
     }
 
     override fun next() = show(getNext())
@@ -104,16 +112,16 @@ internal class InteractiveNotificationComponentImpl :
 
     private fun loadNotification(node: Node) {
         val outgoingEdges = getOutgoingEdges(node)
+
         var actions = emptyList<Action>()
-        if (outgoingEdges != null && !outgoingEdges.isEmpty()) {
-            actions = getOutgoingNode(outgoingEdges) as InteractiveNotification.ActionList
+
+        if (outgoingEdges != null && outgoingEdges.isNotEmpty()) {
+            actions = getOutgoingNode(outgoingEdges) as ActionList
             currentNode = actions
         } else currentNode = node
-        InteractiveNotificationBuilder(context, graph, node, receiver,
-                if (actions.isEmpty()) actions else actions as InteractiveNotification.ActionList)
-                .apply {
-                    expandSubtitle = "Expand to view more.." // TODO
-                }.build().show(notificationId)
+
+        NotificationMaker(context, intentService, graph, channelId, icon, node, actions)
+                .show(notificationId)
     }
 
     private fun getNext(): Node? {
@@ -138,12 +146,12 @@ internal class InteractiveNotificationComponentImpl :
                 return getActionListFromEdges(outgoingEdges)
             }
         }
-        return emptyList<Action>() as InteractiveNotification.ActionList
+        return emptyList<Action>() as ActionList
     }
 
-    private fun getActionListFromEdges(edges: ArrayList<Node>): InteractiveNotification.ActionList {
+    private fun getActionListFromEdges(edges: ArrayList<Node>): ActionList {
         try {
-            val actionList = InteractiveNotification.ActionList()
+            val actionList = ActionList()
             var i = 0
             val size = edges.size
             while (i < size) {

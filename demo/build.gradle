@@ -1,17 +1,7 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url "https://dl.bintray.com/chattylabs/maven" }
-    }
-}
-
-repositories {
-    maven { url "https://dl.bintray.com/chattylabs/maven" }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'com.chattylabs.versioning'
-apply from: '../buildsystem/android.gradle'
+apply from: '../android-buildsystem/android.gradle'
+apply from: '../android-buildsystem/versioning.gradle'
 
 versioning {
 
@@ -28,41 +18,35 @@ androidExtensions {
 }
 
 android {
-    defaultConfig {
-        applicationId "com.chattylabs.demo.interactive.notification"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode versioning.code()
-        versionName versioning.name()
-    }
-    signingConfigs {
-        debug {
-            storeFile file("../buildsystem/debug.keystore")
-        }
-    }
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        applicationId "com.chattylabs.demo.interactive.notification"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Android
-    implementation "com.android.support:appcompat-v7:$support_library"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.15'
-    implementation 'com.google.dagger:dagger-android:2.15'
-    implementation 'com.google.dagger:dagger-android-support:2.15'
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    kapt 'com.google.dagger:dagger-android-processor:2.15'
+    implementation 'com.google.dagger:dagger:2.24'
+    implementation 'com.google.dagger:dagger-android:2.24'
+    implementation 'com.google.dagger:dagger-android-support:2.24'
+    kapt 'com.google.dagger:dagger-compiler:2.24'
+    kapt 'com.google.dagger:dagger-android-processor:2.24'
 
     // Dependencies
-    implementation "com.chattylabs:android-commons:$android_commons"
+    implementation "chattylabs.android:commons:$android_commons"
     implementation project(':interactive-notification')
+
+    // Test dependencies
+    testImplementation 'junit:junit:4.12'
 }

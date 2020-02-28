@@ -1,5 +1,5 @@
 package com.chattylabs.android.interactive.notification
 
-interface InteractiveNotificationFlowTargetId {
+interface FlowTargetId {
     fun to(id: String, vararg optIds: String)
 }

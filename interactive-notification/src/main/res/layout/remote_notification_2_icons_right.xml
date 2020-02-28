@@ -17,15 +17,17 @@
         <TextView
             style="@style/TextAppearance.Compat.Notification.Title"
             android:id="@+id/interactive_notification_title"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             tools:text="Any random Title?"/>
 
         <TextView
-            style="@style/TextAppearance.Compat.Notification.Line2"
+            style="@style/TextAppearance.Compat.Notification"
             android:id="@+id/interactive_notification_info"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"

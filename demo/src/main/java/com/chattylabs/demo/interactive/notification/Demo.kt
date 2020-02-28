@@ -1,9 +1,9 @@
 package com.chattylabs.demo.interactive.notification
 
 import android.content.Context
-import com.chattylabs.android.commons.internal.ILogger
-import com.chattylabs.android.commons.internal.ILoggerImpl
-import com.chattylabs.android.interactive.notification.InteractiveNotificationComponent
+import chattylabs.android.commons.internal.ILogger
+import chattylabs.android.commons.internal.ILoggerImpl
+import com.chattylabs.android.interactive.notification.InteractiveNotification
 import com.chattylabs.android.interactive.notification.InteractiveNotificationModule
 import dagger.Binds
 import dagger.android.AndroidInjector
@@ -35,8 +35,7 @@ class Demo : DaggerApplication() {
             @dagger.Provides
             @Singleton
             fun provideInteractiveNotification(context: Context, logger: ILogger):
-                    InteractiveNotificationComponent =
-                    InteractiveNotificationModule.provideComponent(context, logger)
+                    InteractiveNotification = InteractiveNotificationModule.provide(context, logger)
         }
 
         @Binds
@@ -44,9 +43,6 @@ class Demo : DaggerApplication() {
     
         @ContributesAndroidInjector
         abstract fun demoActivity(): DemoActivity
-    
-        @ContributesAndroidInjector
-        abstract fun notificationsDemoReceiver(): DemoNotificationsReceiver
     }
 
     override fun applicationInjector(): AndroidInjector<out Demo> {

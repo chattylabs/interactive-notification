@@ -2,15 +2,15 @@ package com.chattylabs.android.interactive.notification
 
 import android.app.Application
 import android.content.Context
-import com.chattylabs.android.commons.internal.ILogger
+import chattylabs.android.commons.internal.ILogger
 
 object InteractiveNotificationModule {
 
     @JvmStatic
-    fun provideComponent(context: Context,
-                         logger: ILogger) = InteractiveNotificationComponentImpl
+    fun provide(context: Context,
+                logger: ILogger) = Graph
             .Instance.get().apply {
-        (this as InteractiveNotificationComponentImpl).apply {
+        (this as Graph).apply {
             this.logger = logger.apply {
                 setBuildDebug(BuildConfig.DEBUG)
             }
