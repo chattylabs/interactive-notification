@@ -46,6 +46,7 @@ dependencies {
     implementation "chattylabs.android:commons:$android_commons"
 }
 
+group = 'chattylabs.android'
 description = 'Android Interactive Notification'
 ext.website ="https://github.com/chattylabs/interactive-notification"
 apply from: rootDir.toString() + '/android-buildsystem/publish.gradle'
