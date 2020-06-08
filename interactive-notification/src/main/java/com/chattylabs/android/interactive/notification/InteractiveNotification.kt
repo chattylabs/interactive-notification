@@ -1,6 +1,7 @@
 package com.chattylabs.android.interactive.notification
 
 import android.app.IntentService
+import android.content.Context
 import androidx.annotation.DrawableRes
 
 interface InteractiveNotification {
@@ -14,5 +15,5 @@ interface InteractiveNotification {
 
     fun next()
 
-    fun cancel()
+    fun cancel(context: Context)
 }

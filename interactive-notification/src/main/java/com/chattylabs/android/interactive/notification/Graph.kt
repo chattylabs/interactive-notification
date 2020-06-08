@@ -63,7 +63,7 @@ internal class Graph : Flow.Edge(), InteractiveNotification {
         } else throw IllegalStateException("Only a Message can start the flow.")
     }
 
-    override fun cancel() {
+    override fun cancel(context: Context) {
         release()
         Node.dismiss(context, notificationId)
     }
@@ -106,7 +106,7 @@ internal class Graph : Flow.Edge(), InteractiveNotification {
 
     private fun show(node: Node?) {
         node?.also { n -> loadNotification(n) } ?: {
-            cancel() // Otherwise there is no more nodes
+            cancel(context) // Otherwise there is no more nodes
         }.invoke()
     }
 

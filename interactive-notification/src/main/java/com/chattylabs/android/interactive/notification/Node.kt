@@ -84,7 +84,7 @@ interface Node {
                         component.currentNode = component.getNode(actionId)
                     }
                     component.next()
-                } else component.cancel()
+                } else component.cancel(context)
             }
         }
 
